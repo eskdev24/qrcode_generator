@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator - A Modern Solution</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <style>
+        :root {
+            --primary-color: #00A79D;
+            --primary-hover-color: #00857b;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --section-bg-color: #1E1E1E;
+            --text-color: #ffffff;
+            --navbar-bg-color: rgba(18, 18, 18, 0.8);
+            --card-border-color: #333;
+            --input-bg-color: #2a2a2a;
+            --input-text-color: #ffffff;
+            --footer-muted-color: #a0a0a0;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f8f9fa;
+            --section-bg-color: #ffffff;
+            --text-color: #212529;
+            --navbar-bg-color: rgba(255, 255, 255, 0.8);
+            --card-border-color: #dee2e6;
+            --input-bg-color: #ffffff;
+            --input-text-color: #212529;
+            --footer-muted-color: #6c757d;
+        }
+
+        body {
+            padding-top: 56px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar {
+            background-color: var(--navbar-bg-color) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .logo-img {
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .logo-text-qr {
+            color: var(--primary-color);
+        }
+
+        .text-gradient-blue {
+            background: linear-gradient(45deg, #007bff, #00c6ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .footer-logo-img {
+            height: 40px;
+            margin-bottom: 15px;
+        }
+
+        .generator-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 0;
+            min-height: calc(100vh - 180px);
+            /* Adjust based on footer and header height */
+        }
+
+        .generator-card {
+            background-color: var(--section-bg-color);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--card-border-color);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .generator-card h1 {
+            font-size: 1.8rem;
+        }
+
+        #urlInput {
+            background-color: var(--input-bg-color);
+            color: var(--input-text-color);
+            border: 1px solid var(--card-border-color);
+        }
+
+        #urlInput.is-invalid {
+            border-color: #dc3545;
+        }
+
+        #qrCode {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid var(--card-border-color);
+            border-radius: .25rem;
+            display: inline-block;
+            background-color: #fff;
+            width: 100%;
+            /* Make the container responsive */
+            max-width: 256px;
+            /* Keep the original max-width */
+        }
+
+        #qrCode canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .footer {
+            background: var(--section-bg-color);
+            color: var(--text-color);
+            padding: 40px 0;
+        }
+
+        .footer .text-muted {
+            color: var(--footer-muted-color) !important;
+        }
+
+        .footer .row>div {
+            margin-bottom: 30px;
+        }
+
+        .footer a {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-icons a {
+            font-size: 1.5rem;
+            margin: 0 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover-color);
+            border-color: var(--primary-hover-color);
+        }
+
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            height: 34px;
+            position: relative;
+            width: 60px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            background-color: #ccc;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+        }
+
+        .slider:before {
+            background-color: #fff;
+            bottom: 4px;
+            content: "";
+            height: 26px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+            width: 26px;
+        }
+
+        input:checked+.slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        /* Mobile-first adjustments for text alignment */
+        .footer .col-lg-4,
+        .footer .col-lg-2,
+        .footer .col-lg-3 {
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .generator-section {
+                padding: 60px 0;
+            }
+
+            .generator-card {
+                padding: 2rem;
+            }
+
+            .generator-card h1 {
+                font-size: 2.5rem;
+            }
+
+            /* Desktop-specific alignment */
+            .footer .col-lg-4,
+            .footer .col-lg-2,
+            .footer .col-lg-3 {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/logo.png" alt="QR Gen Logo" class="logo-img">
+                <span class="logo-text-qr">QR</span><span class="text-gradient-blue">Gen</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+                    <li class="nav-item"><a class="btn btn-primary ms-lg-3" href="qrcode.html">Get Started</a></li>
+                    <li class="nav-item ms-lg-3 d-flex align-items-center">
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="checkbox">
+                                <input type="checkbox" id="checkbox" />
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="generator-section">
+        <div class="container text-center px-3">
+            <div class="generator-card mx-auto">
+                <h1 class="mb-4">QR Code Generator</h1>
+                <div class="mb-3">
+                    <input type="text" id="urlInput" class="form-control" placeholder="Enter website URL">
+                    <div id="urlError" class="invalid-feedback text-start">Please enter a valid URL.</div>
+                </div>
+                <button class="btn btn-primary w-100 mt-3" type="button" id="generateBtn">Generate</button>
+                <div id="qrCodeWrapper" class="d-none">
+                    <div id="qrCode" class="mt-3"></div>
+                    <div class="btn-group mt-3" role="group">
+                        <button id="copyBtn" type="button" class="btn btn-outline-secondary">Copy</button>
+                        <button id="downloadPngLink" type="button" class="btn btn-secondary">Download PNG</button>
+                        <button id="downloadSvgLink" type="button" class="btn btn-secondary">Download SVG</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start mb-3">
+                        <img src="images/logo.png" alt="QR Gen Logo" class="footer-logo-img">
+                        <h5 class="text-uppercase ms-2" style="font-weight: 700;"><span
+                                class="logo-text-qr">QR</span><span class="text-gradient-blue">Gen</span></h5>
+                    </div>
+                    <p class="text-muted">A free and open-source utility tool for generating QR codes instantly. Built
+                        with
+                        simplicity and speed in mind.</p>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                    <h5 class="text-uppercase">Links</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="index.html#features">Features</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="qrcode.html">Generator</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                    <h5 class="text-uppercase">Contact</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="#!">contact@qrgen.com</a></li>
+                        <li><a href="#!">+1 234 567 890</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 text-center text-lg-start">
+                    <h5 class="text-uppercase">Follow Us</h5>
+                    <div class="social-icons">
+                        <a href="#!"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#!"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#!"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center p-3 mt-4" style="background-color: rgba(0, 0, 0, 0.2);">
+                &copy; 2025 QR Gen. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const themeSwitch = document.getElementById('checkbox');
+        const navbar = document.querySelector('.navbar');
+        const currentTheme = localStorage.getItem('theme');
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            if (theme === 'light') {
+                themeSwitch.checked = true;
+                navbar.classList.remove('navbar-dark');
+                navbar.classList.add('navbar-light');
+            } else {
+                themeSwitch.checked = false;
+                navbar.classList.remove('navbar-light');
+                navbar.classList.add('navbar-dark');
+            }
+        }
+
+        if (currentTheme) {
+            applyTheme(currentTheme);
+        }
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                localStorage.setItem('theme', 'light');
+                applyTheme('light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                applyTheme('dark');
+            }
+        }
+
+        themeSwitch.addEventListener('change', switchTheme, false);
+
+        const urlInput = document.getElementById('urlInput');
+        const urlError = document.getElementById('urlError');
+        const generateBtn = document.getElementById('generateBtn');
+        const qrCodeWrapper = document.getElementById('qrCodeWrapper');
+        const downloadPngLink = document.getElementById('downloadPngLink');
+        const downloadSvgLink = document.getElementById('downloadSvgLink');
+        const copyBtn = document.getElementById('copyBtn');
+
+        // Initialize QRCodeStyling
+        const qrCode = new QRCodeStyling({
+            width: 256,
+            height: 256,
+            data: "https://www.gemini.google.com", // Default data
+            dotsOptions: {
+                color: "#000000",
+                type: "square"
+            },
+            backgroundOptions: {
+                color: "#ffffff",
+            }
+        });
+
+        // Append the QR code canvas to the designated div
+        qrCode.append(document.getElementById("qrCode"));
+        // Initially hide the QR code and buttons
+        qrCodeWrapper.classList.add('d-none');
+
+
+        generateBtn.addEventListener('click', () => {
+            let url = urlInput.value.trim();
+
+            if (!url) {
+                urlInput.classList.add('is-invalid');
+                urlError.style.display = 'block';
+                qrCodeWrapper.classList.add('d-none');
+                return;
+            }
+
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+
+            try {
+                new URL(url); // Further validate with URL constructor
+                urlInput.classList.remove('is-invalid');
+                urlError.style.display = 'none';
+
+                qrCode.update({
+                    data: url,
+                });
+                qrCodeWrapper.classList.remove('d-none');
+            } catch (e) {
+                urlInput.classList.add('is-invalid');
+                urlError.style.display = 'block';
+                qrCodeWrapper.classList.add('d-none');
+            }
+        });
+
+        // Download PNG
+        downloadPngLink.addEventListener('click', () => {
+            qrCode.download({ name: "qrcode", extension: "png" });
+        });
+
+        // Download SVG
+        downloadSvgLink.addEventListener('click', () => {
+            qrCode.download({ name: "qrcode", extension: "svg" });
+        });
+
+        // Copy to Clipboard
+        copyBtn.addEventListener('click', async () => {
+            try {
+                const blob = await qrCode.getRawData("png");
+                await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => { copyBtn.textContent = originalText; }, 2000);
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Error!';
+                setTimeout(() => { copyBtn.textContent = originalText; }, 2000);
+            }
+        });
+    </script>
+</body>
+
+</html>

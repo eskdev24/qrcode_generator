@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator - A Modern Solution</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00A79D;
+            --primary-hover-color: #00857b;
+            --lead-text-color: #adb5bd;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --section-bg-color: #1E1E1E;
+            --card-bg-color: #2a2a2a;
+            --text-color: #ffffff;
+            --navbar-bg-color: rgba(18, 18, 18, 0.8);
+            --card-border-color: #333;
+            --footer-muted-color: #a0a0a0;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f8f9fa;
+            --section-bg-color: #ffffff;
+            --card-bg-color: #ffffff;
+            --text-color: #212529;
+            --navbar-bg-color: rgba(255, 255, 255, 0.8);
+            --card-border-color: #dee2e6;
+            --footer-muted-color: #6c757d;
+        }
+
+        body {
+            padding-top: 56px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar {
+            background-color: var(--navbar-bg-color) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .logo-img {
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .logo-text-qr {
+            color: var(--primary-color);
+        }
+
+        .text-gradient-blue {
+            background: linear-gradient(45deg, #007bff, #00c6ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .footer-logo-img {
+            height: 40px;
+            margin-bottom: 15px;
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.7)), url('images/bg_image.png');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero-section .display-4 {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+        }
+
+        .hero-section .lead {
+            color: var(--lead-text-color);
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+
+        .social-proof {
+            margin-top: 30px;
+        }
+
+        .social-proof span {
+            color: var(--lead-text-color);
+        }
+
+        .social-proof .fab {
+            font-size: 1.8rem;
+            margin: 0 10px;
+            color: var(--lead-text-color);
+        }
+
+        .section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: 600;
+            font-size: clamp(2rem, 5vw, 2.5rem);
+        }
+
+        .feature-card,
+        .step-card {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--card-border-color);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+        }
+
+        .feature-card:hover,
+        .step-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+
+        .step-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+
+        .analytics-section .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .bg-dark-section {
+            background-color: var(--section-bg-color);
+        }
+
+        .testimonial-card {
+            border: 1px solid var(--card-border-color);
+            background: var(--section-bg-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .testimonial-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .footer {
+            background: var(--section-bg-color);
+            color: var(--text-color);
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer .text-muted {
+            color: var(--footer-muted-color) !important;
+        }
+
+        .footer .row>div {
+            margin-bottom: 30px;
+        }
+
+        .footer a {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-icons a {
+            font-size: 1.5rem;
+            margin: 0 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover-color);
+            border-color: var(--primary-hover-color);
+        }
+
+        .about-img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            height: 34px;
+            position: relative;
+            width: 60px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            background-color: #ccc;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+        }
+
+        .slider:before {
+            background-color: #fff;
+            bottom: 4px;
+            content: "";
+            height: 26px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+            width: 26px;
+        }
+
+        input:checked+.slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        @media (max-width: 767px) {
+            .hero-section .lead {
+                font-size: 1rem;
+            }
+
+            .footer .row>div {
+                text-align: center !important;
+            }
+
+            .testimonial-card {
+                padding: 1rem;
+            }
+
+            .about-img {
+                max-height: 300px;
+                object-fit: cover;
+            }
+
+            .navbar .nav-item {
+                text-align: center;
+            }
+
+            .navbar .btn {
+                margin-top: 10px;
+            }
+
+            .theme-switch-wrapper {
+                justify-content: center;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="images/logo.png" alt="QR Gen Logo" class="logo-img">
+                <span class="logo-text-qr">QR</span><span class="text-gradient-blue">Gen</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#how-it-works">How It Works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+                    <li class="nav-item"><a class="btn btn-primary ms-lg-3" href="qrcode.html">Get Started</a></li>
+                    <li class="nav-item ms-lg-3 d-flex align-items: center">
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="checkbox">
+                                <input type="checkbox" id="checkbox" />
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section">
+        <div class="container px-3" data-aos="fade-in">
+            <h1 class="display-4">Create QR Codes Instantly</h1>
+            <p class="lead">The simplest way to generate, customize, and download QR codes for your business or personal
+                needs. Trusted by professionals worldwide.</p>
+            <a href="qrcode.html" class="btn btn-primary btn-lg">Generate QR Code</a>
+            <div class="social-proof">
+                <span>Trusted by:</span>
+                <i class="fab fa-microsoft"></i>
+                <i class="fab fa-google"></i>
+                <i class="fab fa-discord"></i>
+                <i class="fab fa-github"></i>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="section-title">Features</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card">
+                        <div class="mb-4"><i class="fas fa-bolt feature-icon"></i></div>
+                        <h4>Fast & Easy</h4>
+                        <p>Generate QR codes in seconds with our intuitive interface.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card">
+                        <div class="mb-4"><i class="fas fa-download feature-icon"></i></div>
+                        <h4>High-Resolution</h4>
+                        <p>Download high-quality PNG files suitable for print and web.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card">
+                        <div class="mb-4"><i class="fas fa-link feature-icon"></i></div>
+                        <h4>URL Ready</h4>
+                        <p>Perfect for linking websites, documents, and more.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="section bg-dark-section">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h5 class="mt-3">Enter URL</h5>
+                        <p>Paste the URL you want to link into the generator.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h5 class="mt-3">Generate</h5>
+                        <p>Click the "Generate" button to create your QR code.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h5 class="mt-3">Download</h5>
+                        <p>Save your new QR code as a PNG/SVG file.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="analytics" class="section analytics-section">
+        <div class="container">
+            <h2 class="section-title">Our Impact</h2>
+            <div class="row text-center">
+                <div class="col-md-4 mb-4" data-aos="fade-up">
+                    <h3 class="stat-number" data-target="15789">0</h3>
+                    <p>QR Codes Generated</p>
+                </div>
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="stat-number" data-target="8500">0</h3>
+                    <p>Users Worldwide</p>
+                </div>
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="stat-number" data-target="25000">0</h3>
+                    <p>Downloads</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section bg-dark-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                    <h2>About Us</h2>
+                    <p>We are a team dedicated to providing simple and effective utility tools for everyone. Our QR Code
+                        Generator is designed to be fast, free, and accessible to all.</p>
+                    <h5 class="mt-4">Our Mission</h5>
+                    <p>To democratize technology by creating simple, powerful tools that are accessible to everyone,
+                        everywhere, regardless of technical skill.</p>
+                    <h5 class="mt-4">Our Vision</h5>
+                    <p>We envision a world where technology empowers and connects people, and we strive to be at the
+                        forefront of this movement by providing innovative and easy-to-use solutions.</p>
+                </div>
+                <div class="col-lg-6 text-center" data-aos="fade-left">
+                    <img src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                        class="img-fluid rounded about-img" alt="About Us Image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="section">
+        <div class="container">
+            <h2 class="section-title">What Our Users Say</h2>
+            <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner px-2">
+                    <div class="carousel-item active">
+                        <div class="testimonial-card">
+                            <img src="https://i.pravatar.cc/150?img=32" class="testimonial-img" alt="User 1">
+                            <p>"The best QR code generator I've used. So simple and fast!"</p>
+                            <footer class="blockquote-footer">Jane Doe</footer>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="testimonial-card">
+                            <img src="https://i.pravatar.cc/150?img=59" class="testimonial-img" alt="User 2">
+                            <p>"I love that I can download high-quality codes for my marketing materials."</p>
+                            <footer class="blockquote-footer">John Smith</footer>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="testimonial-card">
+                            <img src="https://i.pravatar.cc/150?img=34" class="testimonial-img" alt="User 2">
+                            <p>"This is a very powerful open source utility tool that I use daily. It's fast, easy to
+                                use, and free!"</p>
+                            <footer class="blockquote-footer">Sarah chen</footer>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="testimonial-card">
+                            <img src="https://i.pravatar.cc/150?img=51" class="testimonial-img" alt="User 2">
+                            <p>"Wow! This is an absolute game changer. I can now create QR codes for my business and
+                                products with ease."</p>
+                            <footer class="blockquote-footer">Micheal Blake</footer>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="testimonial-card">
+                            <img src="https://i.pravatar.cc/150?img=52" class="testimonial-img" alt="User 3">
+                            <p>"A fantastic, no-frills tool that does exactly what it promises."</p>
+                            <footer class="blockquote-footer">Sam Wilson</footer>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0 text-center text-lg-start">
+                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start mb-3">
+                        <img src="images/logo.png" alt="QR Gen Logo" class="footer-logo-img">
+                        <h5 class="text-uppercase ms-2" style="font-weight: 700;"><span
+                                class="logo-text-qr">QR</span><span class="text-gradient-blue">Gen</span></h5>
+                    </div>
+                    <p class="text-muted">A free and open-source utility tool for generating QR codes instantly. Built
+                        with simplicity and speed in mind.</p>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0 text-center text-lg-start">
+                    <h5 class="text-uppercase">Links</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="qrcode.html">Generator</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 text-center text-lg-start">
+                    <h5 class="text-uppercase">Contact</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="#!">contact@qrgen.com</a></li>
+                        <li><a href="#!">+1 234 567 890</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 text-center text-lg-start">
+                    <h5 class="text-uppercase">Follow Us</h5>
+                    <div class="social-icons">
+                        <a href="#!"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#!"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#!"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center p-3 mt-4" style="background-color: rgba(0, 0, 0, 0.2);">
+                &copy; 2025 QR Gen. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const themeSwitch = document.getElementById('checkbox');
+        const navbar = document.querySelector('.navbar');
+        const currentTheme = localStorage.getItem('theme');
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            if (theme === 'light') {
+                themeSwitch.checked = true;
+                navbar.classList.remove('navbar-dark');
+                navbar.classList.add('navbar-light');
+            } else {
+                themeSwitch.checked = false;
+                navbar.classList.remove('navbar-light');
+                navbar.classList.add('navbar-dark');
+            }
+        }
+
+        if (currentTheme) {
+            applyTheme(currentTheme);
+        }
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                localStorage.setItem('theme', 'light');
+                applyTheme('light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+                applyTheme('dark');
+            }
+        }
+
+        themeSwitch.addEventListener('change', switchTheme, false);
+
+        function animate(obj, initVal, lastVal, duration) {
+            let startTime = null;
+
+            const step = (currentTime) => {
+                if (!startTime) {
+                    startTime = currentTime;
+                }
+                const progress = Math.min((currentTime - startTime) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (lastVal - initVal) + initVal).toLocaleString();
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    window.cancelAnimationFrame(window.requestAnimationFrame(step));
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        const stats = document.querySelectorAll('.stat-number');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = entry.target;
+                    const targetVal = parseInt(target.getAttribute('data-target'));
+                    animate(target, 0, targetVal, 2000);
+                    observer.unobserve(target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        stats.forEach(stat => {
+            observer.observe(stat);
+        });
+    </script>
+</body>
+
+</html>
